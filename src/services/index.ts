@@ -1,6 +1,6 @@
 import axios from 'axios'
-import config from '../config'
-import { TypeItem } from '../type'
+import config from '~/config'
+import { TypeItem } from '~/type'
 
 axios.defaults.baseURL = config.baseURL
 
