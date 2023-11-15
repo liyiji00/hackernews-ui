@@ -12,7 +12,7 @@ import {
 
 export default defineConfig({
   shortcuts: {
-    'xy-center': 'felx justify-center items-center ',
+    'xy-center': 'flex justify-center items-center ',
   },
   theme: {
     colors: {
