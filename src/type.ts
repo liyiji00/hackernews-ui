@@ -4,8 +4,12 @@ interface TypeItemBase {
   type: 'job' | 'story' | 'comment' | 'poll' | 'pollopt'
   /** The username of the item's author. */
   by: string
-  /** Creation date of the item, in [Unix Time](http://en.wikipedia.org/wiki/Unix_time). */
-  time: Date
+  /**
+   * Creation date of the item, in [Unix Time](http://en.wikipedia.org/wiki/Unix_time).
+   *
+   * Unix 时间戳功能仅精确到最接近的秒，使用时需要 `*1000` 转为毫秒
+   */
+  time: number
   /** The comment, story or poll text. HTML. */
   text?: string
   dead?: boolean

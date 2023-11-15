@@ -13,6 +13,8 @@ export default (props: {
     props.pageSize
   )
 
+  const SplitSymbol = () => <span className="op50">|</span>
+
   const indexLength = Ids.length.toString().length
   return (
     <div>
@@ -21,9 +23,8 @@ export default (props: {
       </div>
 
       {/* 分页信息 */}
-      <div className="flex justify-center gap-1">
+      <div className="flex justify-between gap-1">
         <button onClick={prevPage}>prev</button>
-        <button onClick={nextPage}>next</button>
 
         <span>
           <span className="mx-1">all: {Ids.length}</span>
@@ -32,6 +33,8 @@ export default (props: {
           </span>
           <span>{loading ? 'loading...' : 'loading done'}</span>
         </span>
+
+        <button onClick={nextPage}>next</button>
       </div>
 
       <ul className="list-none p0">
@@ -40,9 +43,9 @@ export default (props: {
           data.map((item, index) => (
             <li
               key={item.id}
-              className="text-base"
+              className="text-base my-2"
             >
-              <span className="mr-2">
+              <span className="mr-2 op75">
                 {(index + pageSize * pageNum + 1)
                   .toString()
                   .padStart(indexLength, '0')}
@@ -53,18 +56,42 @@ export default (props: {
                   href={item.url}
                   target="_blank"
                   title={item.url}
-                  className="decoration-none color-inherit"
+                  className="op75 hover:op100"
                 >
                   <span
                     dangerouslySetInnerHTML={{ __html: item.title || '' }}
                   />
-                  <div className="text-xs">
-                    <span>{getDomainHost(item.url || '')}</span>
-                  </div>
                 </a>
+
+                <div className="text-xs flex gap-2 ">
+                  {item.url && (
+                    <a
+                      className="decoration-none"
+                      target="_blank"
+                      href={`https://news.ycombinator.com/from?site=${getDomainHost(
+                        item.url
+                      )}`}
+                    >
+                      {getDomainHost(item.url)}
+                    </a>
+                  )}
+                  {item.url && <SplitSymbol />}
+
+                  <span>{item.score || 0} points </span>
+
+                  <SplitSymbol />
+
+                  <span>by: {item.by}</span>
+                  <SplitSymbol />
+
+                  <span>{new Date(item.time * 1000).toLocaleString()}</span>
+                  <SplitSymbol />
+
+                  <span>{item.descendants || 0} comments</span>
+                </div>
               </span>
 
-              <DevPre obj={item} />
+              {/* <DevPre obj={item} /> */}
             </li>
           ))}
       </ul>

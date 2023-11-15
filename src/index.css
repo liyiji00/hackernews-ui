@@ -30,6 +30,7 @@ body {
   margin: 0 auto;
 
   padding: 1rem;
+  box-sizing: border-box;
 }
 
 @media (prefers-color-scheme: light) {
