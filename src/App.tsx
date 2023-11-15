@@ -8,14 +8,17 @@ function App() {
 
       <StoriesPage
         title="New Stories"
+        pageSize={3}
         hook={useNewstories}
       />
       <StoriesPage
         title="Top Stories"
+        pageSize={3}
         hook={useTopstories}
       />
       <StoriesPage
         title="Best Stories"
+        pageSize={3}
         hook={useBeststories}
       />
     </>
