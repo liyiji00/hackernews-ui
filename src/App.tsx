@@ -1,16 +1,7 @@
-import './App.css'
-
 import { useBeststories } from '~/hooks'
 
 function App() {
-  const {
-    beststories,
-    beststorieIds,
-    pageNum: beststoriesPageNum,
-    pageSize: beststoriesPageSize,
-    prevPage: beststoriesPrevPage,
-    nextPage: beststoriesNextPage,
-  } = useBeststories()
+  const beststories = useBeststories()
 
   return (
     <>
@@ -21,22 +12,24 @@ function App() {
       </div>
 
       <p>
-        <button onClick={beststoriesPrevPage}>prev</button>
+        <button onClick={beststories.prevPage}>prev</button>
         <span className="mx-2">
-          <span className="mx-1">all: {beststorieIds.length}</span>
-          <span className="mx-1">page num: {beststoriesPageNum + 1}</span>
-          <span className="mx-1">page size: {beststoriesPageSize}</span>
+          <span className="mx-1">all: {beststories.Ids.length}</span>
+          <span className="mx-1">page num: {beststories.pageNum + 1}</span>
+          <span className="mx-1">page size: {beststories.pageSize}</span>
         </span>
 
-        <button onClick={beststoriesNextPage}>next</button>
+        <button onClick={beststories.nextPage}>next</button>
       </p>
+      <p>loading: {beststories.loading ? 'true' : 'false'}</p>
       <ul>
-        {beststories.length > 0 &&
-          beststories.map((item, index) => (
+        {!beststories.loading &&
+          beststories.Ids.length > 0 &&
+          beststories.data.map((item, index) => (
             <li key={item.id}>
-              {(index + beststoriesPageSize * beststoriesPageNum + 1)
+              {(index + beststories.pageSize * beststories.pageNum + 1)
                 .toString()
-                .padStart(beststorieIds.length.toString().length, '0') + ': '}
+                .padStart(beststories.Ids.length.toString().length, '0') + ': '}
               <a
                 href={item.url}
                 target="filter-drop-shadow"
