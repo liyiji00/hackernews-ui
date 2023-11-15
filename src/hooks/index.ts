@@ -1,43 +1,51 @@
 import { useEffect, useState } from 'react'
 import { getBeststories, getItemById } from '~/services'
-import { TypeItem } from '~/type'
+import { TypeItems } from '~/type'
 import axios from 'axios'
 
-export function useBeststories(size = 10) {
-  const [pageIndex, setPageIndex] = useState(0)
+export function useBeststories(pageSize = 10) {
+  const [pageNum, setPageNum] = useState(0)
 
-  const [beststories, setBeststories] = useState<number[]>([])
+  const [beststorieIds, setBeststorieIds] = useState<number[]>([])
   useEffect(() => {
     getBeststories().then(res => {
-      setBeststories(res.data)
+      setBeststorieIds(res.data)
     })
   }, [])
 
   useEffect(() => {
-    if (beststories.length > 0) {
+    if (beststorieIds.length > 0) {
       axios
         .all(
-          beststories
-            .slice(pageIndex * size, (pageIndex + 1) * size)
+          beststorieIds
+            .slice(pageNum * pageSize, (pageNum + 1) * pageSize)
             .map(id => getItemById(id))
         )
         .then(allRes => {
-          setBeststoriesInfo(allRes.map(res => res.data))
+          setBeststories(allRes.map(res => res.data))
         })
     }
-  }, [beststories, pageIndex, size])
+  }, [beststorieIds, pageNum, pageSize])
 
-  const [beststoriesInfo, setBeststoriesInfo] = useState<TypeItem[]>([])
+  const [beststories, setBeststories] = useState<TypeItems[]>([])
 
+  function prevPage() {
+    if (pageNum > 0) {
+      setPageNum(pageNum - 1)
+    }
+  }
   function nextPage() {
-    if ((pageIndex + 1) * 10 < beststories.length) {
-      setPageIndex(pageIndex + 1)
+    if ((pageNum + 1) * 10 < beststorieIds.length) {
+      setPageNum(pageNum + 1)
     }
   }
 
   return {
-    data: beststoriesInfo,
-    length: beststories.length,
+    beststories,
+    beststorieIds,
+    pageNum,
+    pageSize,
+    prevPage,
     nextPage,
   }
 }

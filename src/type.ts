@@ -18,7 +18,7 @@ interface TypeItemBase {
   /** The URL of the story. */
   url?: string
   /** The story's score, or the votes for a pollopt. */
-  score?: string
+  score?: number
   /** The title of the story, poll or job. HTML. */
   title?: string
   /** A list of related pollopts, in display order. */
@@ -28,25 +28,52 @@ interface TypeItemBase {
 }
 
 export interface TypeItemStory extends TypeItemBase {
+  descendants: number
+  kids: number[]
+  score: number
+  title: string
   type: 'story'
+  url: string
 }
+
 export interface TypeItemComment extends TypeItemBase {
+  kids: number[]
+  parent: number
+  text: string
   type: 'comment'
 }
 export interface TypeItemAsk extends TypeItemBase {
+  descendants: number
+  kids: number[]
+  score: number
+  text: string
+  title: string
   type: 'story'
 }
 export interface TypeItemJob extends TypeItemBase {
+  score: number
+  text: string
+  title: string
   type: 'job'
+  url: string
 }
 export interface TypeItemPoll extends TypeItemBase {
+  descendants: number
+  kids: number[]
+  parts: number[]
+  score: number
+  text: string
+  title: string
   type: 'poll'
 }
 export interface TypeItemParts extends TypeItemBase {
+  poll: number
+  score: number
+  text: string
   type: 'pollopt'
 }
 
-export type TypeItem =
+export type TypeItems =
   | TypeItemStory
   | TypeItemComment
   | TypeItemAsk
