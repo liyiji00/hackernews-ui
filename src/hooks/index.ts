@@ -8,7 +8,7 @@ import {
 import { TypeItems } from '~/type'
 import axios, { AxiosResponse } from 'axios'
 
-function useStoriesByFun(
+export function useStoriesByFun(
   fun: () => Promise<AxiosResponse<number[]>>,
   pageSize: number
 ) {
