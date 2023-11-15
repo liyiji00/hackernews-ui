@@ -1,18 +1,26 @@
 import { useEffect, useState } from 'react'
-import { getBeststories, getItemById } from '~/services'
+import {
+  getItemById,
+  getTopstories,
+  getBeststories,
+  getNewstories,
+} from '~/services'
 import { TypeItems } from '~/type'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
-export function useBeststories(pageSize = 10) {
+function useStoriesByFun(
+  fun: () => Promise<AxiosResponse<number[]>>,
+  pageSize: number
+) {
   const [pageNum, setPageNum] = useState(0)
   const [loading, setLoading] = useState(true)
 
   const [Ids, setIds] = useState<number[]>([])
   useEffect(() => {
-    getBeststories().then(res => {
+    fun().then(res => {
       setIds(res.data)
     })
-  }, [])
+  }, [fun])
 
   useEffect(() => {
     if (Ids.length > 0) {
@@ -53,4 +61,19 @@ export function useBeststories(pageSize = 10) {
     prevPage,
     nextPage,
   }
+}
+
+/** Up to 500 top stories are at /v0/topstories (also contains jobs). */
+export function useTopstories(pageSize = 10) {
+  return useStoriesByFun(getTopstories, pageSize)
+}
+
+/** Up to 500 new stories are at /v0/newstories (also contains jobs). */
+export function useNewstories(pageSize = 10) {
+  return useStoriesByFun(getNewstories, pageSize)
+}
+
+/** Up to 500 best stories are at /v0/beststories (also contains jobs). */
+export function useBeststories(pageSize = 10) {
+  return useStoriesByFun(getBeststories, pageSize)
 }
