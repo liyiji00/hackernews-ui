@@ -15,7 +15,6 @@ export default (props: {
 
   const SplitSymbol = () => <span className="op50">|</span>
 
-  const indexLength = Ids.length.toString().length
   return (
     <div>
       <div>
@@ -40,60 +39,86 @@ export default (props: {
       <ul className="list-none p0">
         {!loading &&
           Ids.length > 0 &&
-          data.map((item, index) => (
-            <li
-              key={item.id}
-              className="text-base my-2"
-            >
-              <span className="mr-2 op75">
-                {(index + pageSize * pageNum + 1)
-                  .toString()
-                  .padStart(indexLength, '0')}
-              </span>
+          data.map((item, index) => {
+            const itemUrl = `https://news.ycombinator.com/item?id=${item.id}`
+            const url = item.url || itemUrl
+            const host = item.url ? getDomainHost(item.url) : null
+            const date = new Date(item.time * 1000).toLocaleString()
 
-              <span>
-                <a
-                  href={item.url}
-                  target="_blank"
-                  title={item.url}
-                  className="op75 hover:op100"
-                >
-                  <span
-                    dangerouslySetInnerHTML={{ __html: item.title || '' }}
-                  />
-                </a>
+            return (
+              <li
+                key={item.id}
+                className="text-base my-2"
+              >
+                <span className="mr-2 op75">
+                  {(index + pageSize * pageNum + 1).toString()}.
+                </span>
 
-                <div className="text-xs flex gap-2 ">
-                  {item.url && (
+                <span>
+                  <a
+                    className="font-bold"
+                    target="_blank"
+                    href={url}
+                  >
+                    <span
+                      dangerouslySetInnerHTML={{ __html: item.title || '' }}
+                    />
+                  </a>
+
+                  <div className="text-xs flex gap-2 ">
+                    {host && (
+                      <a
+                        className=""
+                        target="_blank"
+                        href={`https://news.ycombinator.com/from?site=${host}`}
+                      >
+                        {host}
+                      </a>
+                    )}
+                    {host && <SplitSymbol />}
+
                     <a
-                      className="decoration-none"
+                      className=""
                       target="_blank"
-                      href={`https://news.ycombinator.com/from?site=${getDomainHost(
-                        item.url
-                      )}`}
+                      href={itemUrl}
                     >
-                      {getDomainHost(item.url)}
+                      {item.score || 0} points{' '}
                     </a>
-                  )}
-                  {item.url && <SplitSymbol />}
 
-                  <span>{item.score || 0} points </span>
+                    <SplitSymbol />
 
-                  <SplitSymbol />
+                    <a
+                      className=""
+                      target="_blank"
+                      href={`https://news.ycombinator.com/user?id=${item.by}`}
+                    >
+                      {item.by}
+                    </a>
+                    <SplitSymbol />
 
-                  <span>by: {item.by}</span>
-                  <SplitSymbol />
+                    <a
+                      className=""
+                      target="_blank"
+                      href={itemUrl}
+                    >
+                      {date}
+                    </a>
+                    <SplitSymbol />
 
-                  <span>{new Date(item.time * 1000).toLocaleString()}</span>
-                  <SplitSymbol />
+                    <a
+                      className=""
+                      target="_blank"
+                      href={itemUrl}
+                    >
+                      {item.descendants || 0} comments
+                    </a>
+                  </div>
+                </span>
 
-                  <span>{item.descendants || 0} comments</span>
-                </div>
-              </span>
-
-              {/* <DevPre obj={item} /> */}
-            </li>
-          ))}
+                {/* <DevPre obj={item} /> */}
+              </li>
+            )
+          })}
       </ul>
     </div>
   )

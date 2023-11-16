@@ -6,21 +6,21 @@ function App() {
     <>
       <h1>Hacker News</h1>
 
-      <StoriesPage
+      {/* <StoriesPage
         title="New Stories"
         pageSize={3}
         hook={useNewstories}
-      />
+      /> */}
       <StoriesPage
         title="Top Stories"
-        pageSize={3}
+        pageSize={10}
         hook={useTopstories}
       />
-      <StoriesPage
+      {/* <StoriesPage
         title="Best Stories"
         pageSize={3}
         hook={useBeststories}
-      />
+      /> */}
     </>
   )
 }
