@@ -22,7 +22,7 @@ export function getDomainHost(url: string) {
   if (url.length === 0) return ''
 
   try {
-    return new URL(url).host.split('.').slice(-2).join('.')
+    return new URL(url).host
   } catch (error) {
     devLog(error)
 
