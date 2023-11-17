@@ -1,28 +1,22 @@
-import StoriesPage from './components/StoriesPage'
-import { useBeststories, useNewstories, useTopstories } from './hooks'
+import StoriesPage from '~/components/StoriesPage'
 
-function App() {
+export default function App() {
   return (
     <>
       <h1>Hacker News</h1>
 
       <StoriesPage
-        title="Top Stories"
-        pageSize={5}
-        hook={useTopstories}
+        pageSize={3}
+        type="Top"
       />
       <StoriesPage
-        title="New Stories"
         pageSize={3}
-        hook={useNewstories}
+        type="New"
       />
       <StoriesPage
-        title="Best Stories"
         pageSize={3}
-        hook={useBeststories}
+        type="Best"
       />
     </>
   )
 }
-
-export default App
