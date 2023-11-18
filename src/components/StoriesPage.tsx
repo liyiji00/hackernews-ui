@@ -24,25 +24,25 @@ export default function StoriesPage(props: {
     )
   }, [Ids, pageSize])
 
-  const emptyList = new Array<null>(pageSize).fill(null)
-
-  const Btn = (props: {
+  function Btn(props: {
     onClick: (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
     class?: string
     children?: string | JSX.Element
-  }) => (
-    <button
-      className={classNames(
-        'rd-2 b-0 px-2 py-1 cursor-pointer bg-gray-100',
-        'active:bg-gray-200',
-        'hover:bg-gray-300',
-        props.class
-      )}
-      onClick={props.onClick}
-    >
-      {props.children}
-    </button>
-  )
+  }) {
+    return (
+      <button
+        className={classNames(
+          'rd-2 b-0 px-2 py-1 cursor-pointer bg-gray-100',
+          'active:bg-gray-200',
+          'hover:bg-gray-300',
+          props.class
+        )}
+        onClick={props.onClick}
+      >
+        {props.children}
+      </button>
+    )
+  }
 
   return (
     <div className="my-4">
@@ -62,15 +62,17 @@ export default function StoriesPage(props: {
         </div>
       </div>
 
-      <ul className="list-none p0 my-2 rd-2 overflow-hidden text-base">
-        {(loading ? emptyList : data).map((item, index) => (
-          <StoriesItem
-            index={index + pageSize * pageNum + 1}
-            key={item?.id || index}
-            data={item}
-          />
-        ))}
-      </ul>
+      <div className="list-none p0 my-2 rd-2 overflow-hidden text-base">
+        {(loading ? new Array(pageSize).fill(null) : data).map(
+          (item, index) => (
+            <StoriesItem
+              index={index + pageSize * pageNum + 1}
+              key={item?.id || index}
+              data={item}
+            />
+          )
+        )}
+      </div>
     </div>
   )
 }
